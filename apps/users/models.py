@@ -26,7 +26,7 @@ class UserProfile(BaseModel):
         ('NGN', 'Nigerian Naira'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profiles')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='XAF')
     timezone = models.CharField(max_length=50, default='Africa/Douala')
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)

@@ -11,7 +11,7 @@ urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 
-    # API v1 endpoints (will be added in future sprints)
+    # API v1 endpoints
     path('api/v1/auth/', include('apps.users.urls')),
 ]
 
