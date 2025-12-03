@@ -71,9 +71,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
     """
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['type', 'is_active']
-    search_fields = ['name']
-    ordering_fields = ['name', 'type', 'created_at']
+    filterset_fields = ['type', 'is_active'] # for DjangoFilterBackend
+    search_fields = ['name'] # for SearchFilter
+    ordering_fields = ['name', 'type', 'created_at'] #for OrderingFilter
     ordering = ['type', 'name']
 
     def get_queryset(self):
@@ -130,7 +130,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
     def perform_destroy(self, instance):
         """
         Soft delete the category.
-        Validates that user can only delete their own categories.
+        Validates that user can only delete the
+        ir own categories.
         """
         # Check if system category
         if instance.is_system_category:

@@ -19,6 +19,7 @@ urlpatterns = [
     # API v1 endpoints
     path('api/v1/auth/', include('apps.users.urls')),
     path('api/v1/', include('apps.categories.urls')),
+    path('api/v1/', include('apps.accounts.urls')),
 ]
 
 if settings.DEBUG:
