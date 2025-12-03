@@ -4,6 +4,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
+
+admin.site.site_header = "FINANCE TRACKER ADMIN"
+admin.site.site_title = "Finance Tracker Admin"
+admin.site.index_title = "Welcome to your dashboard"
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
@@ -13,6 +18,7 @@ urlpatterns = [
 
     # API v1 endpoints
     path('api/v1/auth/', include('apps.users.urls')),
+    path('api/v1/', include('apps.categories.urls')),
 ]
 
 if settings.DEBUG:
