@@ -115,4 +115,4 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
 
     def get_transaction_count(self, obj):
         """Get count of transactions using this category"""
-        return obj.transaction_set.filter(is_active=True).count()
+        return obj.transactions.filter(is_active=True).count()
