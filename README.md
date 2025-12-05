@@ -35,4 +35,3 @@ A production-ready REST API for managing personal finances with budgets, transac
 - PostgreSQL 16+
 - Redis 7+
 
-### 1. Clone Repository
