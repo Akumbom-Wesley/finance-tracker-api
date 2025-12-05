@@ -38,6 +38,7 @@ class Transaction(BaseModel):
     description = models.CharField(max_length=255)
     notes = models.TextField(blank=True, null=True)
     transaction_date = models.DateField()
+    tags = models.ManyToManyField('Tag', related_name='transactions', blank=True)
 
     objects = models.Manager()
     active = ActiveManager()
@@ -73,20 +74,13 @@ class Transaction(BaseModel):
         self.full_clean()
         is_new = self.pk is None
 
-        if not is_new:
-            old_transaction = Transaction.objects.get(pk=self.pk)
-            if old_transaction.account:
-                if old_transaction.type == 'income':
-                    old_transaction.account.update_balance(-old_transaction.amount)
-                else:
-                    old_transaction.account.update_balance(old_transaction.amount)
-
         super().save(*args, **kwargs)
 
+        # Apply new balance change
         if self.account:
             if self.type == 'income':
                 self.account.update_balance(self.amount)
-            else:
+            else:  # expense
                 self.account.update_balance(-self.amount)
 
 
@@ -114,35 +108,9 @@ class Tag(BaseModel):
     def __str__(self):
         return f"{self.user.email} - {self.name}"
 
-
-class TransactionTag(models.Model):
-    transaction = models.ForeignKey(
-        Transaction,
-        on_delete=models.CASCADE,
-        related_name='transaction_tags'
-    )
-    tag = models.ForeignKey(
-        Tag,
-        on_delete=models.CASCADE,
-        related_name='transaction_tags'
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        db_table = 'transaction_tags'
-        constraints = [
-            models.UniqueConstraint(
-                fields=['transaction', 'tag'],
-                name='unique_transaction_tag'
-            ),
-        ]
-        indexes = [
-            models.Index(fields=['transaction']),
-            models.Index(fields=['tag']),
-        ]
-
-    def __str__(self):
-        return f"{self.transaction.id} - {self.tag.name}"
+    def get_transaction_count(self):
+        """Get count of active transactions with this tag"""
+        return self.transactions.filter(is_active=True).count()
 
 
 class Receipt(BaseModel):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Transaction, Tag, TransactionTag, Receipt
+from .models import Transaction, Tag, Receipt
 
 
 @admin.register(Transaction)
@@ -16,13 +16,6 @@ class TagAdmin(admin.ModelAdmin):
     list_display = ['name', 'user', 'is_active', 'created_at']
     list_filter = ['is_active', 'created_at']
     search_fields = ['name', 'user__email']
-
-
-@admin.register(TransactionTag)
-class TransactionTagAdmin(admin.ModelAdmin):
-    list_display = ['transaction', 'tag', 'created_at']
-    list_filter = ['created_at']
-    search_fields = ['transaction__description', 'tag__name']
 
 
 @admin.register(Receipt)
